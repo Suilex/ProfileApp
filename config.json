@@ -1,0 +1,16 @@
+{
+    "listeners": [
+        {
+        "address": "127.0.0.1", 
+        "port": 8081,         
+        "https": false        
+        }
+    ],
+    "db_clients": [
+        {
+            "rdbms": "sqlite3",
+            "filename": "db/database.db",
+            "name": "default"
+        }
+    ]
+}

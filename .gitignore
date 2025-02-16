@@ -1,3 +1,7 @@
 subproject/
 build/
 .vscode/
+lib/
+db/changelog/*
+db/database.db
+uploads/
