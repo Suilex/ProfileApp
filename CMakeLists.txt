@@ -19,8 +19,22 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 add_executable(server 
     main.cpp 
     src/controller/ProfileController.cpp
-    src/repository/UserRepository.cpp)
+    src/controller/AuthController.cpp
+    src/repository/UserRepository.cpp
+    src/service/AuthService.cpp
+    )
 
 target_include_directories(server PRIVATE ${PROJECT_SOURCE_DIR}/src/controllers)
 
 target_link_libraries(server PRIVATE Drogon::Drogon)
+
+include(FetchContent)
+FetchContent_Declare(
+  jwt-cpp
+  GIT_REPOSITORY https://github.com/Thalhammer/jwt-cpp.git
+  GIT_TAG v0.7.0
+)
+set(JWT_BUILD_EXAMPLES OFF CACHE INTERNAL "")
+set(JWT_BUILD_TESTS OFF CACHE INTERNAL "")
+FetchContent_MakeAvailable(jwt-cpp)
+target_link_libraries(server PRIVATE jwt-cpp)

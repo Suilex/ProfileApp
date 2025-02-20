@@ -6,11 +6,13 @@ ProfileController::ProfileController()
     : repo(drogon::app().getDbClient()) {} 
 
 void ProfileController::getAllUsers(const drogon::HttpRequestPtr &req,
-                                 std::function<void(const drogon::HttpResponsePtr &)> &&callback) {
+                                 std::function<void(const drogon::HttpResponsePtr &)> &&callback) 
+{
     std::vector<User> users = repo.getAllUsers();
     Json::Value json;
 
-    for (const auto &user : users) {
+    for (const auto &user : users) 
+    {
         Json::Value jsonUser;
         jsonUser["id"] = user.id;
         jsonUser["name"] = user.name;
@@ -22,17 +24,19 @@ void ProfileController::getAllUsers(const drogon::HttpRequestPtr &req,
 }
 
 void ProfileController::addUser(const drogon::HttpRequestPtr &req,
-                             std::function<void(const drogon::HttpResponsePtr &)> &&callback) {
-    auto json = req->getJsonObject();
+                             std::function<void(const drogon::HttpResponsePtr &)> &&callback) 
+{
+    auto requestBody = req->getJsonObject();
 
-    if (!json || !json->isMember("name")) {
+    if (!requestBody || !requestBody->isMember("name")) 
+    {
         auto response = drogon::HttpResponse::newHttpResponse();
         response->setStatusCode(drogon::k400BadRequest);
         callback(response);
         return;
     }
 
-    User newUser(0, (*json)["name"].asString());
+    User newUser(0, (*requestBody)["name"].asString());
     repo.addUser(newUser);
 
     auto response = drogon::HttpResponse::newHttpResponse();

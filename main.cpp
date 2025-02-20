@@ -17,7 +17,7 @@ int main() {
 
     // drogon::app().setLogLevel(trantor::Logger::kError);
     // drogon::app().addListener("127.0.0.1", 8080);
-    drogon::app().loadConfigFile("config.json");
+    drogon::app().loadConfigFile("config/config.json");
     drogon::app().run();
     
     return 0;

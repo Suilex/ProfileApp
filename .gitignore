@@ -5,3 +5,4 @@ lib/
 db/changelog/*
 db/database.db
 uploads/
+src/utils/*

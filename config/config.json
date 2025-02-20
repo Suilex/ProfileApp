@@ -12,5 +12,17 @@
             "filename": "db/database.db",
             "name": "default"
         }
+    ], 
+    "custom_config": {
+        "jwt": {
+            "secret": "your_super_secret_key",
+            "algorithm": "HS256",
+            "issuer": "server"
+        }
+    }, 
+    "filters": [
+        {
+        "name": "JwtMiddleware"
+        }
     ]
 }
