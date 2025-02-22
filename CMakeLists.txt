@@ -25,6 +25,8 @@ add_executable(server
     )
 
 target_include_directories(server PRIVATE ${PROJECT_SOURCE_DIR}/src/controllers)
+target_include_directories(server PRIVATE ${PROJECT_SOURCE_DIR}/src/utils)
+# include_directories(${PROJECT_SOURCE_DIR}/src/utils)
 
 target_link_libraries(server PRIVATE Drogon::Drogon)
 

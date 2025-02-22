@@ -4,21 +4,20 @@
 
 void AuthController::login(const drogon::HttpRequestPtr &req, std::function<void(const drogon::HttpResponsePtr &)> &&callback) 
 {
-    std::string user_id = req->getParameter("user_id");
+    std::string userId = req->getParameter("user_id");
+    Json::Value json;
 
-    if (user_id.empty() || user_id.length() > 1000) 
+    try 
+    {
+        json["token"] = auth_service.generateToken(userId);
+    } 
+    catch (const std::runtime_error &e)
     {
         auto response = drogon::HttpResponse::newHttpResponse();
         response->setStatusCode(drogon::k400BadRequest);
-        response->setBody("Missing 'user_id' parameter");
+        response->setBody(e.what());
         callback(response);
         return;
-    }
-
-    std::string jwtToken;
-    try 
-    {
-        jwtToken = auth_service.generateToken(user_id);
     } 
     catch (const std::exception &e)
     {
@@ -30,8 +29,6 @@ void AuthController::login(const drogon::HttpRequestPtr &req, std::function<void
     }
 
     drogon::HttpResponsePtr response = drogon::HttpResponse::newHttpResponse();
-    Json::Value json;
-    json["token"] = jwtToken;
     response->setStatusCode(drogon::k201Created);
     response->setBody(json.toStyledString());
     callback(response);

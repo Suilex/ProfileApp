@@ -7,7 +7,12 @@ std::string AuthService::generateToken(const std::string &userId)
 {
     auto config = drogon::app().getCustomConfig();
 
-    if (!config["jwt"] || !config["jwt"]["issuer"] || !config["jwt"]["secret"]) {
+    if (userId.empty() || userId.length() > 1000) 
+    {
+        throw std::runtime_error("Missing 'user_id' parameter");
+    } 
+    else if (!config["jwt"] || !config["jwt"]["issuer"] || !config["jwt"]["secret"])
+    {
         throw std::runtime_error("Failed to generate JWT token. Do not find server config");
     }
 

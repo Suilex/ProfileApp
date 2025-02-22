@@ -19,10 +19,5 @@
             "algorithm": "HS256",
             "issuer": "server"
         }
-    }, 
-    "filters": [
-        {
-        "name": "JwtMiddleware"
-        }
-    ]
+    }
 }
