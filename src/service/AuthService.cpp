@@ -9,7 +9,7 @@ std::string AuthService::generateToken(const std::string &userId)
 
     if (userId.empty() || userId.length() > 1000) 
     {
-        throw std::runtime_error("Missing 'user_id' parameter");
+        throw std::runtime_error("Missing 'userd' parameter");
     } 
     else if (!config["jwt"] || !config["jwt"]["issuer"] || !config["jwt"]["secret"])
     {

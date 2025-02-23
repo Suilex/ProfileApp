@@ -22,11 +22,12 @@ add_executable(server
     src/controller/AuthController.cpp
     src/repository/UserRepository.cpp
     src/service/AuthService.cpp
+    src/service/ProfileService.cpp
     )
 
 target_include_directories(server PRIVATE ${PROJECT_SOURCE_DIR}/src/controllers)
 target_include_directories(server PRIVATE ${PROJECT_SOURCE_DIR}/src/utils)
-# include_directories(${PROJECT_SOURCE_DIR}/src/utils)
+target_include_directories(server PRIVATE ${PROJECT_SOURCE_DIR}/src/service)
 
 target_link_libraries(server PRIVATE Drogon::Drogon)
 

@@ -1,25 +1,14 @@
 #include "ProfileController.h"
 #include <drogon/drogon.h>
-#include "../repository/UserRepository.h"
-
-ProfileController::ProfileController()    
-    : repo(drogon::app().getDbClient()) {} 
+#include "../service/ProfileService.h"
 
 void ProfileController::getAllUsers(const drogon::HttpRequestPtr &req,
                                  std::function<void(const drogon::HttpResponsePtr &)> &&callback) 
 {
-    std::vector<User> users = repo.getAllUsers();
-    Json::Value json;
-
-    for (const auto &user : users) 
-    {
-        Json::Value jsonUser;
-        jsonUser["id"] = user.id;
-        jsonUser["name"] = user.name;
-        json.append(jsonUser);
-    }
+    Json::Value users = profileService.getAllUser();
     
-    auto response = drogon::HttpResponse::newHttpJsonResponse(json);
+    auto response = drogon::HttpResponse::newHttpJsonResponse(users);
+    response->setStatusCode(drogon::k200OK);
     callback(response);
 }
 
@@ -28,16 +17,18 @@ void ProfileController::addUser(const drogon::HttpRequestPtr &req,
 {
     auto requestBody = req->getJsonObject();
 
-    if (!requestBody || !requestBody->isMember("name")) 
+    try 
+    {
+        profileService.addUser(requestBody);
+    } 
+    catch (const std::exception &e) 
     {
         auto response = drogon::HttpResponse::newHttpResponse();
-        response->setStatusCode(drogon::k400BadRequest);
+        response->setStatusCode(drogon::k500InternalServerError);
+        response->setBody(e.what());
         callback(response);
         return;
     }
-
-    User newUser(0, (*requestBody)["name"].asString());
-    repo.addUser(newUser);
 
     auto response = drogon::HttpResponse::newHttpResponse();
     response->setStatusCode(drogon::k201Created);
